@@ -6,7 +6,8 @@ import {
 import { createApexMetadataExtractor } from "./metadata-extractor.js";
 
 export interface ApexCompatibleSettings
-  extends Omit<OpenAICompatibleProviderSettings, "metadataExtractor" | "name"> {
+  extends Omit<OpenAICompatibleProviderSettings, "metadataExtractor" | "name" | "baseURL"> {
+  baseURL?: string;
   name?: string;
 }
 
@@ -20,6 +21,7 @@ export function createApexCompatible<
 ): OpenAICompatibleProvider<CHAT, COMPLETION, EMBEDDING, IMAGE> {
   return createOpenAICompatible<CHAT, COMPLETION, EMBEDDING, IMAGE>({
     ...options,
+    baseURL: options.baseURL ?? "",
     name: options.name ?? "apex-compatible",
     includeUsage: true,
     metadataExtractor: createApexMetadataExtractor(),
